@@ -1,6 +1,6 @@
 package com.javabean;
 
-public class Book {
+public class Book implements Comparable<Book>{
     private String title;
     private double price;
 
@@ -61,6 +61,16 @@ public class Book {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public int compareTo(Book o) {
+        int res = Double.compare(this.price,o.price);
+        if(res==0){
+            return this.title.compareTo(o.title); //比较字符串
+        }else{
+            return res;
         }
     }
 }
