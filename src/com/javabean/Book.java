@@ -1,16 +1,15 @@
 package com.javabean;
 
-public class Book implements Comparable<Book>{
+public class Book{
     private String title;
     private double price;
 
-    //构造方法
-    public Book() {  //最重要，JavaBean规范 子类会默认用到它，便于反射
-    }
+    public Book() {}  //最重要，JavaBean规范 子类会默认用到它，便于反射
 
     public Book(String title) {
         this(title, 99.9);
-        //1 this(...)必须放在首行，防止落下父类构造器；this调用属性和方法时;先从本类查找,没有就会去查找父类. 2 必须有一个不含this(...)语句，防止无限递归
+        //1 this(...)必须放在首行，防止落下父类构造器；this调用属性和方法时;先从本类查找,没有就会去查找父类.
+        //2 必须有一个不含this(...)语句，防止无限递归
     }
 
     //构造器重载，参数列表必须不同
@@ -40,37 +39,34 @@ public class Book implements Comparable<Book>{
     }
 
     //取得对象完整信息的方法
-    public String getInfo() {
+    @Override
+    public String toString() {
         return "书名：" + this.title + "，价格：" + this.price;
     }
 
-    //表示当前对象
-    public void print() {
-        System.out.println("this = " + this);// this指向调用当前方法的对象
-    }
-
-    //对象的比较(重写equals)
-    public boolean compare(Book book) {
-        if (book == null) {
-            return false;
-        }
-        if (this == book) {
-            return true; //地址相同
-        }
-        if (this.title.equals(book.title) && this.price == book.price) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    //对象的比较，比较对象的内容 (Obj中默认是==)
     @Override
-    public int compareTo(Book o) {
-        int res = Double.compare(this.price,o.price);
-        if(res==0){
-            return this.title.compareTo(o.title); //比较字符串
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }else if (this == obj) {
+            return true; //地址相同
+        }else if(obj instanceof Book){
+            Book book = (Book) obj;
+            return this.title.equals(book.title) && this.price == book.price;
         }else{
-            return res;
+            return false;
         }
+    }
+
+    //哈希码 特征码：根据对象内容计算出的数字 (Obj中根据物理地址计算，是不同的)
+    @Override
+    public int hashCode(){
+        char[] str = (this.title+this.price).toCharArray();
+        int sum = 0;
+        for(char c:str){
+            sum += c+2;
+        }
+        return sum;
     }
 }
