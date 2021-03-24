@@ -3,7 +3,6 @@ package com.test;
 import com.javabean.Book;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class TestArray {
     public static void main(String[] args) {
@@ -24,7 +23,7 @@ public class TestArray {
         books[1] = new Book("JSP", 69.8);
         books[2] = new Book("Android", 89.8);
         for (Book book : books) { //只读访问，安全
-            System.out.println(book.getInfo());
+            System.out.println(book.toString());
         }
 
         //数组的复制：效率System.arraycopy > clone > Arrays.copyOf > for循环
